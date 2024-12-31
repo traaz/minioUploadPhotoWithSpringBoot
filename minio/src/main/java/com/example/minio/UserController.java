@@ -52,7 +52,7 @@ public class UserController {
 
         userRepository.save(user);
 
-        return "Kayıt edildi";
+        return profilePhotoUrl;
 
     }
 }
