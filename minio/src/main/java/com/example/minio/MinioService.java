@@ -11,14 +11,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Service
 public class MinioService {
 
-    private static final String MINIO_URL = "";
-    private static final String ACCESS_KEY = "";
-    private static final String SECRET_KEY = "";
-    private static final String BUCKET_NAME = "";
+    private static final String MINIO_URL = "http://127.0.0.1:9000";
+    private static final String ACCESS_KEY = "minioadmin";
+    private static final String SECRET_KEY = "minioadmin";
+    private static final String BUCKET_NAME = "photos";
 
     private MinioClient minioClient;
     private String bucketName;
@@ -32,7 +35,17 @@ public class MinioService {
     }
 
     public String uploadPhoto(InputStream photo, String tcKlimlikNo) throws IOException, MinioException, NoSuchAlgorithmException, InvalidKeyException {
-        String objectName =  tcKlimlikNo + ".jpg"; // bucket altında  altına tckimlikNo.jpg olarak kayit edilecek
+        Date mevcutTarih = new Date();
+        SimpleDateFormat yilFormat = new SimpleDateFormat("yyyy");
+        SimpleDateFormat ayFormat = new SimpleDateFormat("MM");
+        SimpleDateFormat gunFormat = new SimpleDateFormat("dd");
+
+
+        String yil = yilFormat.format(mevcutTarih);
+        String ay = ayFormat.format(mevcutTarih);
+        String gun = gunFormat.format(mevcutTarih);
+
+        String objectName = yil + "-" +  ay + "-" + gun + "/" + tcKlimlikNo + ".jpg"; // bucket altında  altına tckimlikNo.jpg olarak kayit edilecek
 
         minioClient.putObject(
                 PutObjectArgs.builder()
